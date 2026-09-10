@@ -26,14 +26,17 @@ Y_GRAVITY = 0.6
 JUMP_HEIGHT = 20
 Y_VELOCITY = JUMP_HEIGHT
 
-STANDING_SURFACE = pygame.transform.scale(pygame.image.load("assets/squarestand.png"), (114, 124))
-JUMPING_SURFACE = pygame.transform.scale(pygame.image.load("assets/squreJump.png"), (114, 124))
+SCRAPPING_SOUND = pygame.mixer.Sound("assets/Concrete scrape loop [7cAnlZ1U1Mg].mp3")
+
+STANDING_SURFACE = pygame.transform.scale(pygame.image.load("assets/Chiikawa_front.png"), (114, 124))
+JUMPING_SURFACE = pygame.transform.scale(pygame.image.load("assets/Chiikawa_front.png"), (114, 124))
 PLATFORM = pygame.transform.scale(pygame.image.load("assets/platform.png"), (143, 35))
 BACKGROUND = pygame.image.load("assets/stage.png")
 
 platform_rects = [PLATFORM.get_rect(center=(px, py)) for px, py in platform_positions]
 
 kurimanju_rect = STANDING_SURFACE.get_rect(center=(X_POSITION, Y_POSITION))
+play_sound = False
 
 while True:
     for event in pygame.event.get():
@@ -43,10 +46,19 @@ while True:
 
     keys_pressed = pygame.key.get_pressed()
 
+    play_sound = False
     if keys_pressed[pygame.K_a]:
         X_POSITION -= 10
+        play_sound = True
     if keys_pressed[pygame.K_d]:
         X_POSITION += 10
+        play_sound = True
+
+    if play_sound:
+        if not pygame.mixer.Sound.get_num_channels(SCRAPPING_SOUND):
+            SCRAPPING_SOUND.play(loops=-1)
+    else:
+        pygame.mixer.Sound.stop(SCRAPPING_SOUND)
 
     if keys_pressed[pygame.K_SPACE] and on_ground:
         jumping = True
