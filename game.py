@@ -35,7 +35,14 @@ STANDING_SURFACE = pygame.transform.scale(pygame.image.load("assets/Chiikawa_fro
 JUMPING_SURFACE = pygame.transform.scale(pygame.image.load("assets/Chiikawa_front.png"), (114, 124))
 PLATFORM = pygame.transform.scale(pygame.image.load("assets/platform.png"), (143, 35))
 BACKGROUND = pygame.image.load("assets/forest_plain.png")
+BACKGROUND_FIRST = pygame.image.load("assets/forest_first.png")
+BACKGROUND_PUDDLE = pygame.image.load("assets/forest_puddle.png")
+BACKGROUND_END = pygame.image.load("assets/forest_end.png")
 BACKGROUND = pygame.transform.scale(BACKGROUND, (SCREEN_WIDTH, SCREEN_HEIGHT))
+BACKGROUND_END = pygame.transform.scale(BACKGROUND_END, (SCREEN_WIDTH, SCREEN_HEIGHT))
+BACKGROUND_PUDDLE = pygame.transform.scale(BACKGROUND_PUDDLE, (SCREEN_WIDTH, SCREEN_HEIGHT))
+BACKGROUND_FIRST = pygame.transform.scale(BACKGROUND_FIRST, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
 
 platform_rects = [PLATFORM.get_rect(center=(px, py)) for px, py in platform_positions]
 
@@ -111,7 +118,12 @@ while True:
     draw_offset_x = round(camera_offset_x)
 
     for i in range(num_tiles_needed):
-        SCREEN.blit(BACKGROUND, (i * bg_width - draw_offset_x, 0))
+        if i == 0:
+            SCREEN.blit(BACKGROUND_FIRST, ((i * bg_width - draw_offset_x, 0)))
+        else:
+            SCREEN.blit(BACKGROUND, (i * bg_width - draw_offset_x, 0))
+    else:
+        SCREEN.blit(BACKGROUND_END, ((i - 1) * bg_width - draw_offset_x, 0))
 
     for px, py in platform_positions:
         SCREEN.blit(PLATFORM, (px - camera_offset_x, py))
