@@ -12,15 +12,19 @@ pygame.display.set_caption("Kurimanjus quest for beer")
 
 X_POSITION, Y_POSITION = float(400), float(660)
 GROUND_Y = Y_POSITION
+WATER_Y = Y_POSITION - 60
 
 platform_positions = [
     (900, 600),
     (1300, 500),
     (1700, 250),
+    (2500, 150),
+    (2500, 150),
 ]
 
 jumping = False
 on_ground = True
+hit_puddle = False
 
 PLAYER_WIDTH, PLAYER_HEIGHT = 114, 124
 
@@ -58,10 +62,10 @@ while True:
             sys.exit()
 
     play_sound = False
-    if keys_pressed[pygame.K_a]:
+    if keys_pressed[pygame.K_a] or keys_pressed[pygame.K_LEFT]:
         X_POSITION -= SPEED
         play_sound = True
-    if keys_pressed[pygame.K_d]:
+    if keys_pressed[pygame.K_d] or keys_pressed[pygame.K_RIGHT]:
         X_POSITION += SPEED
         play_sound = True
 
@@ -71,7 +75,7 @@ while True:
     else:
         pygame.mixer.Sound.stop(SCRAPPING_SOUND)
 
-    if keys_pressed[pygame.K_SPACE] and on_ground:
+    if (keys_pressed[pygame.K_SPACE] or keys_pressed[pygame.K_z]) and on_ground:
         jumping = True
         on_ground = False
         Y_VELOCITY = JUMP_HEIGHT
